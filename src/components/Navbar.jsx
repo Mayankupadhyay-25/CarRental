@@ -1,13 +1,11 @@
-import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import React, { useState } from "react";
 import { assets, menuLinks } from "../assets/assets";
 
-const Navbar = ({setShowLogin}) => {
-
-
+const Navbar = ({ setShowLogin }) => {
   const location = useLocation();
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <div
@@ -39,15 +37,23 @@ const Navbar = ({setShowLogin}) => {
           <img src={assets.search_icon} alt="search" className="h-5" />
         </div>
         <div className="flex max-sm:flex-col max-sm:items-start sm:items-center gap-6">
-          <button onClick={()=> navigate('/owner')} className="cursor-pointer">Dashbord</button>
-          <button onClick={()=> setShowLogin(true)}
+          <button onClick={() => navigate("/owner")} className="cursor-pointer">
+            Dashbord
+          </button>
+          <button
+            onClick={() => setShowLogin(true)}
             className="cursor-pointer px-8 py-2 bg-primary hover:bg-primary-dull transition-all text-white
           rounded-lg"
-          >Login
+          >
+            Login
           </button>
         </div>
       </div>
-      <button className='sm:hidden coursor-pointer'aria-label="menu" onClick={()=> setOpen(!open)}>
+      <button
+        className="sm:hidden coursor-pointer"
+        aria-label="menu"
+        onClick={() => setOpen(!open)}
+      >
         <img src={open ? assets.close_icon : assets.menu_icon} alt="menu" />
       </button>
     </div>
