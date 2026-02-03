@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import CarDetails from './pages/CarDetails'
 import Cars from './pages/Cars'
 import MyBooking from './pages/MyBooking'
+import Footer from './components/Footer'
 
 const App = () => {
 
@@ -23,6 +24,9 @@ const isOwnerPath = useLocation().pathname.startsWith('/owner')
 
 
       </Routes>
+
+      {!isOwnerPath && <Footer />}
+      
     </>
   )
 }
