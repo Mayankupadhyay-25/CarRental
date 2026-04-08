@@ -5,7 +5,7 @@ import { assets, dummyMyBookingsData } from "../assets/assets";
 const MyBooking = () => {
   const [bookings, setBookings] = useState([]);
 
-  const currency = import.meta.env.VITE_CURRENCY 
+  const currency = import.meta.env.VITE_CURRENCY;
 
   const fetchBookings = async () => {
     setBookings(dummyMyBookingsData);
@@ -70,8 +70,9 @@ const MyBooking = () => {
                 />
                 <div>
                   <p className="text-gray-500">Rental period</p>
-                  <p> 
-                    {booking.pickupDate.split("T")[0]} To {booking.returnDate.split("T")[0]}
+                  <p>
+                    {booking.pickupDate.split("T")[0]} To{" "}
+                    {booking.returnDate.split("T")[0]}
                   </p>
                 </div>
               </div>
@@ -84,9 +85,7 @@ const MyBooking = () => {
                 />
                 <div>
                   <p className="text-gray-500">Pick-up Location</p>
-                  <p> 
-                    {booking.car.location}
-                  </p>
+                  <p>{booking.car.location}</p>
                 </div>
               </div>
             </div>
@@ -94,13 +93,13 @@ const MyBooking = () => {
             <div className="md:col-span-1 flex flex-col justify-between gap-6">
               <div className="text-sm text-gray-500 text-right">
                 <p>Total price</p>
-                <h1 className="text-2xl font-semibold text-primary ">{currency}{booking.price}</h1>
+                <h1 className="text-2xl font-semibold text-primary ">
+                  {currency}
+                  {booking.price}
+                </h1>
                 <p>Booked on {booking.createdAt.split("T")[0]}</p>
               </div>
             </div>
-
-
-
           </div>
         ))}
       </div>
