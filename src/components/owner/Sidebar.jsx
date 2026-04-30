@@ -1,16 +1,29 @@
 import React, { useState } from 'react'
-import { assets, dummyUserData, ownerMenuLinks } from '../../assets/assets'
-import { NavLink, useLocation } from 'react-router-dom';
+import { assets, ownerMenuLinks } from '../../assets/assets'
+import { data, NavLink, useLocation } from 'react-router-dom';
+import { useAppContext } from '../../context/AppContext';
 
 const Sidebar = () => {
 
     const [image, setImage] = useState(null);
-    const user = dummyUserData;
+    const {user, axios, feachUser} = useAppContext
 
     const location = useLocation();
-    const updateImage = async () => {
-        setImage("")
+    try {
+        const formData = new FormData()
+        formData.append("image", image)
+        if(data.success){
+            feachUser()
+            toast.success(data.message)
+            setImage('')
+        }else{
+            toast.error(data.message)
+        }
+    }catch (error){
+        toast.error(error.message)
+
     }
+}
 
   return (
     <div className='relative min-h-screen md:flex flex-col item-center pt-8 max-w-13 md:max-w-60 w-full border-r
