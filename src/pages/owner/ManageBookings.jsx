@@ -1,16 +1,34 @@
-import React, { useEffect,useState } from 'react'
-import { dummyMyBookingsData } from '../../assets/assets';  
+import React, { useEffect,useState } from 'react' 
 import Title from '../../components/owner/Title';
+import { useAppContext } from '../../context/appContext';
 
 
 const ManageBookings = () => {
 
+  const { currency, axios} = useAppContext()
 
- const currency = import.meta.env.VITE_CURRENCY;
   const [bookings, setBookings] = useState([])
 
   const fetchOwnerBookingData = async () => {
-    setBookings(dummyMyBookingsData)
+    try {
+      const { data } = await axios.get("/api/owner/bookings")
+      data.success ? setBookings(data.bookings) : toast.error(data.message) 
+    } catch (error) {
+      toast.error(error.message) 
+    }
+  }
+   const changeBookingSatus = async (bookingId, status) => {
+    try {
+      const { data } = await axios.post("/api/bookingschange-status", { bookingId, status })
+     if(data.success){
+      toast.success(data.message)
+     }
+      
+    } catch (error) {
+      toast.error(error.message)
+      
+    }
+    
   }
   
   useEffect(( ) =>{
@@ -45,10 +63,6 @@ const ManageBookings = () => {
                   {booking.pickupDate?.split("T")[0]} - {booking.returnDate?.split("T")[0]}
 
                 </td>
-
-
-
-
                 <td className='p-3'>{currency}{booking.price}</td>
 
                 <td className='p-3 max-md:hidden'>
@@ -57,7 +71,7 @@ const ManageBookings = () => {
                 </td>
                 <td className='p-3'>
                   {booking.status === "pending" ? (
-                    <select defaultValue={booking.status} className='px-2 py-1.5 mt-1 text-gray-500 border border-borderColor rounded-md outline-none'>
+                    <select onChange={e=> changeBookingSatus(booking._id,e.target.value)} defaultValue={booking.status} className='px-2 py-1.5 mt-1 text-gray-500 border border-borderColor rounded-md outline-none'>
                       <option value="pending">pending</option>
                       <option value="cancelled">Cancelled </option>
                       <option value="confirmed">Confirm</option>
