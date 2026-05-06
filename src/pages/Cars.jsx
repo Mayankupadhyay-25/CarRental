@@ -1,10 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Title from "../components/Title";
 import CarCard from "../components/CarCard";
-import { assets, dummyCarData } from "../assets/assets";
+import { assets } from "../assets/assets";
+import { useSearchParams } from "react-router-dom";
+import { useAppContext } from "../context/AppContext";
+import toast from "react-hot-toast";
 
 const Cars = () => {
+
+  const [searchParams] = useSearchParams();
+  const pickupLocation = searchParams.get("pickupLocation");
+  const pickupDate = searchParams.get("pickupDate");
+  const returnDate = searchParams.get("returnDate");
+
+  const { cars, axios } = useAppContext();
+
   const [input, setInput] = useState("");
+ 
+  const isSearchData = pickupLocation && pickupDate && returnDate;
+   const [filteredCars, setFilteredCars] = useState([]);
+
+   const applyFilter = async () =>{
+    if (input === ""){
+      setFilteredCars(cars);
+      return null
+    }
+   }
+
+   useEffect(() => {
+    cars.leangth > 0 && !isSearchData && applyFilter();
+   }, []) 
+
+  const searchCarAvailability = async () => {
+    const { data } = await axios.post("/api/booking/check-availability", {
+      location: pickupLocation, pickupDate, returnDate
+    });
+    if (data?.success) {
+      setFilteredCars(data.availableCars);
+      if (data.availableCars.length === 0) {
+        toast.error("No cars available for the selected dates and location");
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (isSearchData) searchCarAvailability();
+  }, [isSearchData]);
+
+  const displayCars = isSearchData ? filteredCars : cars;
+  const filteredByInput = input
+    ? displayCars.filter(car =>
+        `${car.brand} ${car.model}`.toLowerCase().includes(input.toLowerCase())
+      )
+    : displayCars;
+
   return (
     <div>
       <div className="flex flex-col items-center py-20 bg-light max-md:px-4">
@@ -28,11 +77,11 @@ const Cars = () => {
 
       <div className="px-6 md:px-16 lg:px-24 xl:px-32 mt-10">
         <p className="text-gray-500 xl:px-20 max-w-7xl mx-auto">
-          Showing {dummyCarData.length} Cars
+          Showing {filteredByInput.length} Cars
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mtg-4 xl:px-20 max-w-7x1 mx-auto">
-          {dummyCarData.map((car, index) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 xl:px-20 max-w-7xl mx-auto">
+          {filteredByInput.map((car, index) => (
             <div key={index}>
               <CarCard car={car} />
             </div>
