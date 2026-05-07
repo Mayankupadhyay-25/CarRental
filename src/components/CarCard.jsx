@@ -15,7 +15,7 @@ const CarCard = ({car}) => {
           <img src={car.image} alt=" Car Image " className='w-full h-full object-cover transition-transform
           dutration-500 group-hover:scale-105'/>
 
-          {car.isAvaliable && <p className='absolute top-4 left-4  bg-primary/90 text-white text-xs
+          {car.isAvailable && <p className='absolute top-4 left-4  bg-primary/90 text-white text-xs
           px-2.5 py-1 rounded-full'>Available Now</p> }
 
           <div className='absolute bottom-4 right-4 bg-black/80 backdrop-blure-sm text-white
@@ -42,15 +42,15 @@ const CarCard = ({car}) => {
             </div>
              <div className='flex item-center text-sm text-muted-foreground '>
               <img src={assets.fuel_icon} alt="" className='h-4 mr-2'/>
-              <span>{car.fule_type} Seats</span>
+              <span>{car.fuel_type}</span>
             </div>
              <div className='flex item-center text-sm text-muted-foreground '>
               <img src={assets.car_icon} alt="" className='h-4 mr-2'/>
-              <span>{car.transmission} Seats</span>
+              <span>{car.transmission}</span>
             </div>
             <div className='flex item-center text-sm text-muted-foreground '>
               <img src={assets.location_icon} alt="" className='h-4 mr-2'/>
-              <span>{car.location} Seats</span>
+              <span>{car.location}</span>
             </div>
           </div>
         </div>

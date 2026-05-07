@@ -25,11 +25,20 @@ const Cars = () => {
       setFilteredCars(cars);
       return null
     }
+
+    const filtered = cars.slice().filter(car => {
+      return car.brand.toLowerCase().includes(input.toLowerCase()) 
+             ||car.model.toLowerCase().includes(input.toLowerCase())
+             ||car.category.toLowerCase().includes(input.toLowerCase())
+             ||car.transmission.toLowerCase().includes(input.toLowerCase())
+
+    });
+    setFilteredCars(filtered);
    }
 
    useEffect(() => {
     cars.leangth > 0 && !isSearchData && applyFilter();
-   }, []) 
+   }, [input, cars]) 
 
   const searchCarAvailability = async () => {
     const { data } = await axios.post("/api/booking/check-availability", {
