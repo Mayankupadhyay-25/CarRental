@@ -14,9 +14,8 @@ const CarDetails = () => {
   const currency = import.meta.env.VITE_CURRENCY 
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
     try {
-      if (!token) return setShowLogin(true)
       const { data } = await axios.post('/api/booking/create', {
         car: car._id, pickupDate, returnDate, location: car.location
       })
@@ -135,4 +134,4 @@ const CarDetails = () => {
 
 export default CarDetails;
 
-// noth anything 
+
