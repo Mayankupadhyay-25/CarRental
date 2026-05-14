@@ -1,14 +1,22 @@
 import React, { useState } from "react";
 import Title from "../components/Title";
-import { assets, dummyMyBookingsData } from "../assets/assets";
+import { assets } from "../assets/assets";
+import { useAppContext } from "../context/AppContext";
+import toast from "react-hot-toast";
 
 const MyBooking = () => {
+  const { axios, token, setShowLogin } = useAppContext()
   const [bookings, setBookings] = useState([]);
 
   const currency = import.meta.env.VITE_CURRENCY;
 
   const fetchBookings = async () => {
-    setBookings(dummyMyBookingsData);
+    try {
+      const { data } = await axios.get("/api/booking/user")
+      data.success ? setBookings(data.bookings) : toast.error(data.message)
+    } catch (error) {
+      toast.error(error.message)
+    }
   };
 
   React.useEffect(() => {

@@ -26,7 +26,7 @@ const Cars = () => {
       return null
     }
 
-    const filtered = cars.slice().filter(car => {
+    const filtered = cars.slice().filter((car) => {
       return car.brand.toLowerCase().includes(input.toLowerCase()) 
              ||car.model.toLowerCase().includes(input.toLowerCase())
              ||car.category.toLowerCase().includes(input.toLowerCase())
@@ -37,24 +37,25 @@ const Cars = () => {
    }
 
    useEffect(() => {
-    cars.leangth > 0 && !isSearchData && applyFilter();
+    cars.length > 0 && !isSearchData && applyFilter();
    }, [input, cars]) 
 
   const searchCarAvailability = async () => {
     const { data } = await axios.post("/api/booking/check-availability", {
       location: pickupLocation, pickupDate, returnDate
-    });
+    })
     if (data?.success) {
       setFilteredCars(data.availableCars);
       if (data.availableCars.length === 0) {
-        toast.error("No cars available for the selected dates and location");
+        toast("No cars available ");
       }
+      return null
     }
   }
 
   useEffect(() => {
-    if (isSearchData) searchCarAvailability();
-  }, [isSearchData]);
+    isSearchData && searchCarAvailability();
+  }, []);
 
   const displayCars = isSearchData ? filteredCars : cars;
   const filteredByInput = input
@@ -86,11 +87,11 @@ const Cars = () => {
 
       <div className="px-6 md:px-16 lg:px-24 xl:px-32 mt-10">
         <p className="text-gray-500 xl:px-20 max-w-7xl mx-auto">
-          Showing {filteredByInput.length} Cars
+          Showing {filteredCars.length} Cars
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 xl:px-20 max-w-7xl mx-auto">
-          {filteredByInput.map((car, index) => (
+          {filteredCars.map((car, index) => (
             <div key={index}>
               <CarCard car={car} />
             </div>
