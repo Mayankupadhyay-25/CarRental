@@ -4,7 +4,7 @@ import { useAppContext } from "../context/AppContext";
 
 
 const Hero = () => {
-  const [pickupLocation, setPickupLocation] = useState("");
+  const [pickupLocation, setPickupLocation] = useState("")
 
   const {pickupDate, setPickupData: setPickupDate, returnDate, setReturnDate, navigate} = useAppContext();
   

@@ -25,6 +25,7 @@ const AddCar = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     if(isLoading) return null // prevent multiple submissions
+    
     setIsLoading(true)
     try{
       const fromData = new FormData()
