@@ -17,7 +17,7 @@ const CarDetails = () => {
     e.preventDefault(); 
     try {
       const { data } = await axios.post('/api/booking/create', {
-        car: car._id, pickupDate, returnDate, location: car.location
+        car: id, pickupDate, returnDate, 
       })
       if (data.success) {
         toast.success(data.message)
