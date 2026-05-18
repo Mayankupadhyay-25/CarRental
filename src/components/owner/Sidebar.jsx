@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 
 const Sidebar = () => {
 
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState('');
     const { user, axios, fetchUser } = useAppContext()
     const location = useLocation();
 
@@ -18,7 +18,7 @@ const Sidebar = () => {
             if (data.success) {
                 fetchUser()
                 toast.success(data.message)
-                setImage(null)
+                setImage('')
             } else {
                 toast.error(data.message)
             }
