@@ -15,6 +15,7 @@ export const AppProvider = ({children})=>{
     const [token, setToken] = useState(null)
     const [user, setUser] = useState(null)
     const [isOwner, setIsOwner] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [showLogin , setShowLogin] = useState(false)
     const [pickupDate, setPickupData] = useState('')
     const [returnDate, setReturnDate] = useState('')
@@ -33,6 +34,8 @@ export const AppProvider = ({children})=>{
             }
         }catch(error){
             toast.error(error.message)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -67,12 +70,14 @@ export const AppProvider = ({children})=>{
         if(token){
             axios.defaults.headers.common['Authorization'] = token
             fetchUser()
+        } else {
+            setLoading(false)
         }
     },[token])
 
     const value = {
         navigate, currency, axios, user, setUser, token, setToken, isOwner, setIsOwner, fetchUser, showLogin, 
-        setShowLogin, pickupDate, setPickupData, returnDate, setReturnDate, cars, setCars, fetchCars, logout
+        setShowLogin, pickupDate, setPickupData, returnDate, setReturnDate, cars, setCars, fetchCars, logout, loading
     }
 
     return (
