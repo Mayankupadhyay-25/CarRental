@@ -5,7 +5,7 @@ import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 
 const MyBooking = () => {
-  const { axios, token, setShowLogin } = useAppContext()
+  const { axios, user, token, setShowLogin } = useAppContext()
   const [bookings, setBookings] = useState([]);
 
   const currency = import.meta.env.VITE_CURRENCY;
