@@ -6,25 +6,13 @@ import toast from "react-hot-toast";
 
 const Navbar = () => {
 
-  const{setShowLogin, user, logout, isOwner, axios, setIsOwner} = useAppContext()
+  const{setShowLogin, user, logout, isOwner, axios} = useAppContext()
 
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
-  const changeRole = async() => {
-    try{
-      const {data} = await axios.post('/api/owner/change-role')
-      if(data.success){
-        setIsOwner(!isOwner)
-        toast.success(data.message)
-      }else{
-      toast.error(data.message)
-    }
-    }catch (error){
-      toast.error(error.message)
-    }
-  }
+  // Removed changeRole function - only predefined owner can access owner features
 
   return (
     <div
@@ -56,9 +44,11 @@ const Navbar = () => {
           <img src={assets.search_icon} alt="search" className="h-5" />
         </div>
         <div className="flex max-sm:flex-col max-sm:items-start sm:items-center gap-6">
-          <button onClick={() => isOwner ? navigate("/owner") : changeRole() } className="cursor-pointer">
-           {isOwner ? "Dashbord" : 'Listcars'}
-          </button>
+          {isOwner && (
+            <button onClick={() => navigate("/owner")} className="cursor-pointer">
+              Dashboard
+            </button>
+          )}
           <button
             onClick={() => {user ? logout() : setShowLogin(true)}}
             className="cursor-pointer px-8 py-2 bg-primary hover:bg-primary-dull transition-all text-white
