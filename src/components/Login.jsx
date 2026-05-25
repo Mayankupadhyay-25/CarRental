@@ -2,7 +2,7 @@ import React from 'react'
 import { useAppContext } from '../context/AppContext';
 import toast from 'react-hot-toast'
 
-const login = () => {
+const Login = () => {
 
     const {setShowLogin, axios, setToken, navigate} = useAppContext()
 
@@ -73,4 +73,4 @@ const login = () => {
     </div>
   )
 }   
-export default login
+export default Login
