@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createContext, use, useContext } from "react";
+import { createContext, useContext } from "react";
 import axios from 'axios'
 import toast from 'react-hot-toast'
+import { dummyCarData } from '../assets/assets';
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL
 
@@ -20,7 +21,7 @@ export const AppProvider = ({children})=>{
     const [pickupDate, setPickupData] = useState('')
     const [returnDate, setReturnDate] = useState('')
 
-    const [cars, setCars] = useState([])
+    const [cars, setCars] = useState(dummyCarData || [])
 
     //function to check if user is logged in 
     const fetchUser = async()=>{
@@ -28,7 +29,7 @@ export const AppProvider = ({children})=>{
             const {data} = await axios.get('/api/users/data')
             if (data.success){
                 setUser(data.user)
-                setIsOwner(data.user.role === 'owner')
+                setIsOwner(data.user.role?.toLowerCase() === 'owner')
             }else{
                 navigate('/')
             }
@@ -36,6 +37,23 @@ export const AppProvider = ({children})=>{
             toast.error(error.message)
         } finally {
             setLoading(false)
+        }
+    }
+
+    // Function to change user role to owner
+    const changeRole = async () => {
+        try {
+            const { data } = await axios.post('/api/owner/change-role')
+            if (data.success) {
+                setIsOwner(true)
+                setUser(prev => prev ? ({ ...prev, role: 'owner' }) : prev)
+                toast.success(data.message || 'Switched to owner mode')
+                navigate('/owner')
+            } else {
+                toast.error(data.message)
+            }
+        } catch (error) {
+            toast.error(error.message)
         }
     }
 
@@ -53,16 +71,18 @@ export const AppProvider = ({children})=>{
     useEffect(()=>{
         const token = localStorage.getItem('token')
         setToken(token)
-            setToken(token)
-            fetchCars()
+        fetchCars()
     }, [])
+
     // Function to fetch all cars from the server 
     const fetchCars = async()=>{
         try{
             const {data} = await axios.get('/api/users/cars')
-            data.success ? setCars(data.cars) : toast.error(data.message)
+            if (data?.success && Array.isArray(data.cars) && data.cars.length > 0) {
+                setCars(data.cars)
+            }
         }catch(error){
-            if(error.response) toast.error(error.message)
+            console.log("Could not fetch cars from server:", error.message)
         }
     }
     // useEffect to fetch user data when token is available 
@@ -77,7 +97,7 @@ export const AppProvider = ({children})=>{
 
     const value = {
         navigate, currency, axios, user, setUser, token, setToken, isOwner, setIsOwner, fetchUser, showLogin, 
-        setShowLogin, pickupDate, setPickupData, returnDate, setReturnDate, cars, setCars, fetchCars, logout, loading
+        setShowLogin, pickupDate, setPickupData, returnDate, setReturnDate, cars, setCars, fetchCars, logout, loading, changeRole
     }
 
     return (

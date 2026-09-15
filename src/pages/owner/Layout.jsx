@@ -8,7 +8,7 @@ const Layout = () => {
   const { isOwner, navigate, user, loading } = useAppContext()
 
   useEffect(() => {
-    if (!loading && user !== null && !isOwner) {
+    if (!loading && (!user || !isOwner)) {
       navigate('/')
     }
   }, [isOwner, user, loading])
